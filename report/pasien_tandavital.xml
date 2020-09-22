@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+
+    <template id="pasien_tandavital_document">
+        <t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})"/>
+        <div class="article" style="padding-top:10px; font-family: Tahoma; font-size:13px;">
+
+            <br/>
+            <h5 class="text-center">Laporan Pemeriksaan Tanda Vital</h5>
+            <br/>
+
+            <table class="table table-bordered" style="border-collapse: collapse;table-layout: auto;width: 100%;">
+                <tbody>
+                    <tr>
+                        <td><b>Nama:</b></td>
+                        <td><span t-field="doc.name"/></td>
+                        <td><b>Nama Ayah:</b></td>
+                        <td><span t-field="doc.nama_ayah"/></td>
+                    </tr>
+                    <tr>
+                        <td><b>No RM:</b></td>
+                        <td><span t-field="doc.code"/></td>
+                        <td><b>Nama Ibu:</b></td>
+                        <td><span t-field="doc.nama_ibu"/></td>
+                    </tr>
+                    <tr>
+                        <td><b>Tgl Lahir:</b></td>
+                        <td><span t-field="doc.dob"/></td>
+                        <td><b>Umur :</b></td>
+                        <td><span t-field="doc.age"/></td>
+                    </tr>
+                    <tr>
+                        <td><b>Jenis Kelamin:</b></td>
+                        <td><span t-field="doc.sex"/></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <br/>
+            <h5 class="text-center">Tanda Vital</h5>
+            <br/>
+
+            <table class="table table-bordered" style="border-collapse: collapse;table-layout: auto;width: 100%;">
+                <thead>
+                    <tr class="text-center">
+                        <th>Tanggal</th>
+                        <th>Lingkar Kepala</th>
+                        <th>BB</th>
+                        <th>TB</th>
+                        <th>Suhu Badan</th>
+                        <th>Nafas</th>
+                        <th>Nadi</th>
+                        <th>Tekanan Darah</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="doc.appointment_line" t-as="line">
+                        <tr>
+                            <td width="15%"><span t-esc="line.date.strftime('%m/%d/%Y')"/></td>
+                            <td class="text-center" width="15%"><span t-esc="line.lingkar_kepala"/></td>
+                            <td class="text-center"><span t-esc="line.berat_badan"/></td>
+                            <td class="text-center"><span t-esc="line.tinggi_badan"/></td>
+                            <td class="text-center"><span t-esc="line.suhu_badan"/></td>
+                            <td class="text-center"><span t-esc="line.pernafasan"/></td>
+                            <td class="text-center"><span t-esc="line.nadi"/></td>
+                            <td class="text-center" width="15%"><span t-esc="line.tekanan_darah"/></td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </div>
+    </template>
+
+    <template id="pasien_tandavital">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="aa_hms_pasien.pasien_tandavital_document" t-lang="doc.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+    <report id="pasien_tandavital_id"
+        string="Pasien - Tanda Vital"
+        model="hms.patient"
+        report_type="qweb-pdf"
+        file="aa_hms_pasien.pasien_tandavital"
+        name="aa_hms_pasien.pasien_tandavital"/>
+
+</odoo>

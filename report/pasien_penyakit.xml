@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+
+    <template id="pasien_penyakit_document">
+        <t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})"/>
+        <div class="article" style="padding-top:10px; font-family: Tahoma; font-size:13px;">
+
+            <br/>
+            <h5 class="text-center">Laporan Ringkasan Penyakit Pasien</h5>
+            <br/>
+
+            <table class="table table-bordered" style="border-collapse: collapse;table-layout: auto;width: 100%;">
+                <tbody>
+                    <tr>
+                        <td><b>Nama:</b></td>
+                        <td><span t-field="doc.name"/></td>
+                        <td><b>Nama Ayah:</b></td>
+                        <td><span t-field="doc.nama_ayah"/></td>
+                    </tr>
+                    <tr>
+                        <td><b>No RM:</b></td>
+                        <td><span t-field="doc.code"/></td>
+                        <td><b>Nama Ibu:</b></td>
+                        <td><span t-field="doc.nama_ibu"/></td>
+                    </tr>
+                    <tr>
+                        <td><b>Tgl Lahir:</b></td>
+                        <td><span t-field="doc.dob"/></td>
+                        <td><b>Umur :</b></td>
+                        <td><span t-field="doc.age"/></td>
+                    </tr>
+                    <tr>
+                        <td><b>Jenis Kelamin:</b></td>
+                        <td><span t-field="doc.sex"/></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <br/>
+            <h5 class="text-center">Informasi Penting Tentang Penyakit :</h5>
+            <br/>
+
+            <table class="table table-bordered" style="border-collapse: collapse;table-layout: auto;width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Keluhan Utama</th>
+                        <th>Anamnesis</th>
+                        <th>Pemeriksaan Fisik</th>
+                        <th>Diagnosis</th>
+                        <th>Dokter</th>
+                        <th>Terapi/Tindakan</th>
+                        <th>Alergi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="doc.patient_diseases" t-as="line">
+                        <tr>
+                            <td><span t-esc="line.diagnosed_date.strftime('%m/%d/%Y')"/></td>
+                            <td><span t-esc="line.description"/></td>
+                            <td><span t-esc="line.anamnesis"/></td>
+                            <td><span t-esc="line.pemeriksaan_fisik"/></td>
+                            <td><span t-esc="line.disease.name"/></td>
+                            <td><span t-esc="line.physician_id.name"/></td>
+                            <td><span t-esc="line.tindakan"/></td>
+                            <td><span t-esc="{False: '-', 'da': 'Drug Allergy', 'fa': 'Food Allergy', 'ma': 'Misc Allergy', 'mc': 'Misc Contraindication'}[line.allergy_type]"/></td>
+                            <t />
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </div>
+    </template>
+
+
+    <template id="pasien_penyakit">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="aa_hms_pasien.pasien_penyakit_document" t-lang="doc.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+    <report id="pasien_penyakit_id"
+        string="Pasien - Riwayat Penyakit "
+        model="hms.patient"
+        report_type="qweb-pdf"
+        file="aa_hms_pasien.pasien_penyakit"
+        name="aa_hms_pasien.pasien_penyakit"/>
+
+</odoo>

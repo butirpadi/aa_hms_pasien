@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- Menu Form Pasien (Tabel Tanda Vital) -->
+
+        <record model="ir.ui.view" id="view_patient_form_custom">
+            <field name="name">hms.patient.form.custom</field>
+            <field name="model">hms.patient</field>
+            <field name="inherit_id" ref="acs_hms.view_patient_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="replace">
+                    <field name="partner_id"/>
+                </field>
+                <field name="department_ids" position="after">
+                    <field name="nama_ayah"/>
+                    <field name="nama_ibu"/>
+                </field>
+            </field>
+        </record>
+
+
+
+        <!-- Menu Form Pasien (Tabel Penyakit) -->
+
+        <record id="view_hms_patient_disease_tree_custom" model="ir.ui.view">
+            <field name="name">hms.patient.disease.tree.custom</field>
+            <field name="model">hms.patient.disease</field>
+            <field name="inherit_id" ref="acs_hms.view_hms_patient_disease_tree"/>
+            <field name="arch" type="xml">
+                <field name="treatment_id" position="after">
+                    <field name="description"/>
+                    <field name="anamnesis"/>
+                    <field name="pemeriksaan_fisik"/>
+                    <field name="tindakan"/>
+                    <field name="allergy_type"/>
+                </field>
+            </field>
+        </record>
+
+
+        <record id="view_hms_patient_disease_form_custom" model="ir.ui.view">
+            <field name="name">patient.disease.form</field>
+            <field name="model">hms.patient.disease</field>
+            <field name="inherit_id" ref="acs_hms.view_hms_patient_disease_form"/>
+            <field name="arch" type="xml">
+                <xpath expr='//sheet' position='replace'>
+                    <sheet>
+                        <group string="Diagnosis">
+                            <group>
+                                <field name="physician_id" string="Doctor"/>
+                                <field name="disease"/>
+                            </group>
+                            <group>
+                                <field name="diagnosed_date"/>
+                                <field name="age"/>
+                            </group>
+                        </group>
+                        <group string="Keluhan Utama">
+                            <field name="description" nolabel="1"/>
+                        </group>
+                        <group string="Anamnesis">
+                            <field name="anamnesis" nolabel="1"/>
+                        </group>
+                        <group string="Pemeriksaan Fisik">
+                            <field name="pemeriksaan_fisik" nolabel="1"/>
+                        </group>
+                        <group string="Tindakan">
+                            <field name="tindakan" nolabel="1"/>
+                        </group>
+                        <group string="Other Information">
+                            <group>
+                                <field name="status"/>
+                                <field name="disease_severity"/>
+                                <field name="healed_date" string="Healing Date"/>
+                                <field name="is_infectious"/>
+                            </group>
+                            <group>
+                                <field name="is_allergy"/>
+                                <field name="allergy_type"/>
+                                <field name="lactation"/>
+                                <field name="pregnancy_warning"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </xpath>
+            </field>
+            </record>
+
+
+    </data>
+</odoo>
